@@ -5,14 +5,14 @@ plugins {
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
 }
 
-group "com.sunset"
-version "1.0.0"
-
 allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
     }
+
+    group = "com.sunset"
+    version = "1.0.0"
 
     ext {
         set("commonsLangVersion", "3.9")

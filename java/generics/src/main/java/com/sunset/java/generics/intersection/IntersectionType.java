@@ -5,6 +5,9 @@ import java.util.function.Function;
 
 public class IntersectionType {
 
+    // ----------------------------------------
+    // 1. marker interface
+
     /**
      * marker interface: 구현 메소드가 0개인 인터페이스
      *
@@ -20,26 +23,24 @@ public class IntersectionType {
         System.out.println("linear func result: " + fx.apply(a));
     }
 
-    /**
-     *
-     *
-     * @param <T>
-     */
-    public interface DelegateTo<T> {
-        T delegate();
+    // ----------------------------------------
+    // 2. interface default method + callback
+
+    public static <T extends Function<S, S>, S> void run(T t, Consumer<T> callback) {
+        callback.accept(t);
+    }
+    public static <T extends Function<S, S>, S> S run(T t, Function<T, S> callback) {
+        return callback.apply(t);
     }
 
-    public interface Bot extends DelegateTo<String> {
-        default void hello() {
-            System.out.println("Hello " + delegate());
-        }
-
-        default void goodbye() {
-            System.out.println("Goodbye " + delegate());
+    public interface LibraryModel extends Function<Integer, Integer> {
+        default int opposite(int a) {
+            return -1 * apply(a);
         }
     }
-
-    public static <T extends DelegateTo<S>, S> void run(T t, Consumer<T> consumer) {
-        consumer.accept(t);
+    public interface CustomModel extends Function<Integer, Integer> {
+        default int remains(int a, int r) {
+            return apply(a) % r;
+        }
     }
 }

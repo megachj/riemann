@@ -47,7 +47,7 @@ extends 로 upper bounded 되어 있지 않다면 Type Erasure 시에 Object 가
   * 원소가 필요하지 않은 List.size() 와 같은 작업만 사용
   * 원소 작업이 필요하더라도 toString() 과 같은 작업만 사용
   * List\<Object\>, List\<Integer\>, ... 와 같이 고정되어 있지 않고, 범위로 표현된다.
-* List<Object>: List<\?\> 와 비슷한 의미인데, Generic Type 의 상속 관계 때문에 List\<Integer\> 와 같은 것을 받을 수 없다.
+* List\<Object\>: List<\?\> 와 비슷한 의미인데, Generic Type 의 상속 관계 때문에 List\<Integer\> 와 같은 것을 받을 수 없다.
   * List\<Object\> 1개로 고정되어 있다.
 
 ## Bounded

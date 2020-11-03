@@ -32,11 +32,12 @@ configure(subprojects.filter { it.parent?.name in listOf("java") }) {
     }
 
     dependencies {
-        compileOnly("org.projectlombok:lombok")
-        testCompileOnly("org.projectlombok:lombok")
-        annotationProcessor("org.projectlombok:lombok")
-        testAnnotationProcessor("org.projectlombok:lombok")
+        compileOnly("org.projectlombok:lombok:1.18.16")
+        testCompileOnly("org.projectlombok:lombok:1.18.16")
+        annotationProcessor("org.projectlombok:lombok:1.18.16")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
 
-        testCompileOnly("junit:junit:4.13.1")
+        testImplementation("junit:junit:4.13.1")
+        testImplementation("org.hamcrest:hamcrest-core:2.2")
     }
 }

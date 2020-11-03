@@ -1,4 +1,4 @@
-package com.sunset.java.generics.intersection;
+package com.sunset.java.generics;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

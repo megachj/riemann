@@ -1,10 +1,10 @@
-package com.sunset.java.generics.intersection;
+package com.sunset.java.generics;
 
 import org.junit.Test;
 
 import java.util.function.Function;
 
-import static com.sunset.java.generics.intersection.IntersectionType.*;
+import static com.sunset.java.generics.IntersectionType.*;
 
 public class IntersectionTypeTest {
 

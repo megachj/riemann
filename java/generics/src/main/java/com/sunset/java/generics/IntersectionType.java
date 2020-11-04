@@ -38,6 +38,7 @@ public class IntersectionType {
             return -1 * apply(a);
         }
     }
+
     public interface CustomModel extends Function<Integer, Integer> {
         default int remains(int a, int r) {
             return apply(a) % r;

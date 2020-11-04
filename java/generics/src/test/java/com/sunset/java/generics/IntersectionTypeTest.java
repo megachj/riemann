@@ -16,7 +16,7 @@ public class IntersectionTypeTest {
         printFuncResult(x -> 100, 1);
         printFuncResult((Function<Integer, Integer> & LinearFuncMarker) x -> 2 * x + 1, 1); // (Function<Integer, Integer> & LinearFuncMarker) is a Function<Integer, Integer>
 
-        // printLinearFunctionResult((Function<Integer, Integer>)x -> 100, 10); // compile error: Function<Integer, Integer> is not a (Function<Integer, Integer> & LinearFuncMarker)
+        // printLinearFuncResult((Function<Integer, Integer>)x -> 100, 10); // compile error: Function<Integer, Integer> is not a (Function<Integer, Integer> & LinearFuncMarker)
         printLinearFuncResult((Function<Integer, Integer> & LinearFuncMarker) x -> 2 * x + 1, 1);
     }
 

@@ -1,5 +1,7 @@
 package com.sunset.java.generics;
 
+import com.sunset.java.generics.TypeErasure.MyOptional;
+import com.sunset.java.generics.TypeErasure.MyOptionalPerson;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -36,9 +38,14 @@ public class GenericTypeTest {
 
     @Test
     public void typeErasure() {
-        MyOptional<String> stringOptional = MyOptional.ofNullable("hello");
+        MyOptional<String> stringMyOptional = MyOptional.ofNullable("hello");
+        System.out.println(stringMyOptional.getTypeName()); // java.lang.Object 출력
 
-        System.out.println(stringOptional.getTypeName()); // java.lang.Object 출력
+        MyOptionalPerson<Person> optionalPerson = MyOptionalPerson.ofNullable(new Person());
+        System.out.println(optionalPerson.getTypeName()); // Person 출력
+
+        MyOptionalPerson<Developer> optionalDeveloper = MyOptionalPerson.ofNullable(new Developer());
+        System.out.println(optionalDeveloper.getTypeName()); // Person 출력
     }
 
     @Test

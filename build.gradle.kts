@@ -1,8 +1,8 @@
 plugins {
     java
     `java-library`
-    id("org.springframework.boot") version "2.3.3.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("org.springframework.boot") version "2.3.5.RELEASE"
+    id("io.spring.dependency-management") version "1.0.10.RELEASE"
 }
 
 allprojects {
@@ -12,7 +12,6 @@ allprojects {
     }
 
     group = "com.sunset"
-    version = "1.0.0"
 
     ext {
         set("commonsLangVersion", "3.9")
@@ -23,8 +22,9 @@ allprojects {
     }
 }
 
-configure(subprojects.filter { it.parent?.name in listOf("java") }) {
+configure(subprojects.filter { it.parent?.name in listOf("java", "spring") }) {
     apply(plugin = "java")
+    apply(plugin = "java-library")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -39,5 +39,22 @@ configure(subprojects.filter { it.parent?.name in listOf("java") }) {
 
         testImplementation("junit:junit:4.13.1")
         testImplementation("org.hamcrest:hamcrest-core:2.2")
+    }
+}
+
+configure(subprojects.filter { it.parent?.name in listOf("spring")}) {
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    tasks.bootJar { enabled = true }
+    tasks.jar { enabled = false }
+
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter")
+
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        testAnnotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
 }

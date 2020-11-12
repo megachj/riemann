@@ -22,7 +22,7 @@ allprojects {
     }
 }
 
-configure(subprojects.filter { it.parent?.name in listOf("java", "spring") }) {
+configure(subprojects.filter { it.path.contains("java") or it.path.contains("spring") }) {
     apply(plugin = "java")
     apply(plugin = "java-library")
 

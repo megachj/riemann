@@ -10,6 +10,7 @@ import java.util.concurrent.Executor;
 @EnableAsync
 @Configuration
 public class AsyncConfig {
+
     @Bean(name = "asyncTaskExecutor")
     public Executor asyncTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

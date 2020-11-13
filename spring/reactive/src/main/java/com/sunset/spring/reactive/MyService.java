@@ -1,21 +1,20 @@
 package com.sunset.spring.reactive;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.Future;
 
 @Slf4j
-@Component
-public class Service {
+@Service
+public class MyService {
     private final WebClient webClient;
 
-    public Service(WebClient.Builder webClientBuilder) {
+    public MyService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8080").build();
     }
 
@@ -67,41 +66,41 @@ public class Service {
     public enum MethodType {
         SPRING_ASYNC {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToSpringAsync(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToSpringAsync(millis);
             }
         },
         SPRING_ASYNC_TASK_EXECUTOR {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToSpringAsyncTaskExecutor(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToSpringAsyncTaskExecutor(millis);
             }
         },
         FUTURE {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToFuture(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToFuture(millis);
             }
         },
         MONO_UNSUBSCRIBE {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToMonoUnsubscribe(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToMonoUnsubscribe(millis);
             }
         },
         MONO_SUBSCRIBE {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToMonoSubscribe(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToMonoSubscribe(millis);
             }
         },
         BLOCK {
             @Override
-            public void callMethod(Service service, long millis) {
-                service.callToBlock(millis);
+            public void callMethod(MyService myService, long millis) {
+                myService.callToBlock(millis);
             }
         };
 
-        public abstract void callMethod(Service service, long millis);
+        public abstract void callMethod(MyService myService, long millis);
     }
 }

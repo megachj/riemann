@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class Controller {
+public class MyController {
 
-    private final Service service;
+    private final MyService myService;
 
     /**
-     * 동작 확인용 API
      * curl 명령어: curl -d 'methodType={methodType}&millis={millis}' -X POST 'http://localhost:8080/task/run'
      *
      * @param methodType
@@ -22,9 +21,9 @@ public class Controller {
      * @return
      */
     @PostMapping("/task/run")
-    public Boolean runTask(@RequestParam("methodType") Service.MethodType methodType, @RequestParam(defaultValue = "1000") long millis) {
+    public Boolean runTask(@RequestParam("methodType") MyService.MethodType methodType, @RequestParam(defaultValue = "1000") long millis) {
         log.info("runTask API start.");
-        methodType.callMethod(service, millis);
+        methodType.callMethod(myService, millis);
         log.info("runTask API end.");
 
         return true;

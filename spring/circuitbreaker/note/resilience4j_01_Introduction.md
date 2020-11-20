@@ -35,3 +35,6 @@
 * Camel Circuit Breaker
 * Spring Cloud Circuit Breaker
 * http4k resilience module
+
+# 링크
+* 가이드: https://resilience4j.readme.io/docs/getting-started

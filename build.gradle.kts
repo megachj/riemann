@@ -14,8 +14,6 @@ allprojects {
     group = "com.sunset"
 
     ext {
-        set("commonsLangVersion", "3.9")
-        set("googleGuavaVersion", "26.0-android")
         set("hibernateValidatorVersion", "6.1.2.Final")
         set("springAutoRestDocsVersion", "2.0.7")
         set("springDocOpenApiUiVersion", "1.4.3")
@@ -37,12 +35,12 @@ configure(subprojects.filter { it.path.contains("java") or it.path.contains("spr
         annotationProcessor("org.projectlombok:lombok:1.18.16")
         testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
 
-        testImplementation("junit:junit:4.13.1")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
         testImplementation("org.hamcrest:hamcrest-core:2.2")
     }
 }
 
-configure(subprojects.filter { it.parent?.name in listOf("spring")}) {
+configure(subprojects.filter { it.path.contains("spring") }) {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 

@@ -30,7 +30,6 @@ public class MyService {
         return new AsyncResult<>(callCommonApiTemplate(millis).block());
     }
 
-
     public Future<Boolean> callToFuture(long millis) {
         log.info("callToFuture begin. {} millis", millis);
         return callCommonApiTemplate(millis).toFuture();

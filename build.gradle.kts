@@ -17,6 +17,7 @@ allprojects {
         set("hibernateValidatorVersion", "6.1.2.Final")
         set("springAutoRestDocsVersion", "2.0.7")
         set("springDocOpenApiUiVersion", "1.4.3")
+        set("resilience4jVersion", "1.6.1")
     }
 }
 

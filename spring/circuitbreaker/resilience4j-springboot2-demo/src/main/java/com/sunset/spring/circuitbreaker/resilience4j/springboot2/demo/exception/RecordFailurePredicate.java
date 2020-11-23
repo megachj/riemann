@@ -1,4 +1,4 @@
-package com.sunset.spring.circuitbreaker.demo.resilience4j.springboot2.exception;
+package com.sunset.spring.circuitbreaker.resilience4j.springboot2.demo.exception;
 
 import java.util.function.Predicate;
 

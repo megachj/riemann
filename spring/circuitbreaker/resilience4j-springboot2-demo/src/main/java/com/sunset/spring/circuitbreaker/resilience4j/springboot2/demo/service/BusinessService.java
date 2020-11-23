@@ -1,4 +1,4 @@
-package com.sunset.spring.circuitbreaker.demo.resilience4j.springboot2.service;
+package com.sunset.spring.circuitbreaker.resilience4j.springboot2.demo.service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

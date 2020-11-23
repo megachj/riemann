@@ -1,6 +1,6 @@
-package com.sunset.spring.circuitbreaker.demo.resilience4j.springboot2.service;
+package com.sunset.spring.circuitbreaker.resilience4j.springboot2.demo.service;
 
-import com.sunset.spring.circuitbreaker.demo.resilience4j.springboot2.exception.BusinessException;
+import com.sunset.spring.circuitbreaker.resilience4j.springboot2.demo.exception.BusinessException;
 import io.github.resilience4j.bulkhead.BulkheadFullException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;

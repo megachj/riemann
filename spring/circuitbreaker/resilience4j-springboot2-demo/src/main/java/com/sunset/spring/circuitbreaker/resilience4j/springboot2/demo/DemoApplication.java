@@ -1,4 +1,4 @@
-package com.sunset.spring.circuitbreaker.demo.resilience4j.springboot2;
+package com.sunset.spring.circuitbreaker.resilience4j.springboot2.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

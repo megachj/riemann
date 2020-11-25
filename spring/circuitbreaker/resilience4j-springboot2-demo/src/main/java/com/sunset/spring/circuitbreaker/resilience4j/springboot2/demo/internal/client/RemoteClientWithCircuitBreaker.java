@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CLIENT_CIRCUIT_BREAKER)
@@ -38,7 +39,7 @@ public class RemoteClientWithCircuitBreaker {
                 .uri(uriBuilder -> uriBuilder.path("/remote/failure/client").build())
                 .retrieve()
                 .bodyToMono(String.class)
-                .onErrorMap(HttpServerErrorException.class, ex -> {
+                .onErrorMap(WebClientResponseException.class, ex -> {
                     log.warn("Response Error Message: {}", ex.getMessage());
                     return new IgnoreException();
                 })

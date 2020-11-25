@@ -71,21 +71,23 @@ sliding window 크기가 15 라고 하더라도 말이다. sliding window 크기
 Resilience4j 는 in-memory `CircuitBreakerRegistry`를 제공한다.
 이것은 ConcurrentHashMap 을 base 로 하여, thread safety 와 원자성 보장을 한다.
 
-서킷브레이커레지스트리는 서킷브레이커 인스턴스를 매니지하는데 사용하고, 이 레지스트리는 글로벌 기본 설정 `CircuitBreakerConfig` 으로
+서킷브레이커 레지스트리는 서킷브레이커 인스턴스를 매니지하는데 사용하고, 이 레지스트리는 글로벌 기본 설정 `CircuitBreakerConfig` 으로
 생성할 수 있다.
 
-```java
-CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.ofDefaults();
-```
-
 ## Create and configure a CircuitBreaker
-https://resilience4j.readme.io/docs/circuitbreaker#create-and-configure-a-circuitbreaker
-
+* 참조: https://resilience4j.readme.io/docs/circuitbreaker#create-and-configure-a-circuitbreaker
 
 ## Decorate and execute a functional interface
+서킷브레이커가 CLOSED, HALF_OPEN 상태일 때 결과를 꾸며줄 수 있는 기능이다.
 
 ## Consume emitted RegistryEvents
+서킷브레이커 레지스트리에 이벤트 컨슈머를 등록할 수 있다.
+서킷브레이커가 생성, 변경, 삭제될 때의 이벤트에 대한 행동을 정할 수 있다.
 
 ## Consume emitted CircuitBreakerEvents
+서킷브레이커 이벤트란 상태 변환, 리셋, 성공 호출, recorded 에러, ignored 에러를 말한다.
+모든 이벤트는 공통적으로 이벤트 생성 시간, 호출 처리 기간같은 추가 정보가 포함된다.
+위 서킷브레이커 이벤트 컨슈머를 등록할 수 있다.
 
 ## Override the RegistryStore
+인메모리 서킷브레이커 레지스트리를 직접 구현해 오버라이드할 수 있다.

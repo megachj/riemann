@@ -17,7 +17,7 @@ public class MyController {
     private final RemoteClientWithCircuitBreaker remoteClientWithCircuitBreaker;
 
     /**
-     * curl 명령어: curl -X GET 'http://localhost:8080/my/remote-status?type={type}'
+     * curl 명령어: curl -X GET "http://localhost:8080/my/remote-status?type={type}"
      *
      * @param type
      * @return
@@ -62,13 +62,13 @@ public class MyController {
         CB_FAILURE_CLIENT {
             @Override
             public Mono<String> getRemoteCall(RemoteClient remoteClient, RemoteClientWithCircuitBreaker remoteClientWithCircuitBreaker) {
-                return remoteClientWithCircuitBreaker.getFailureClient();
+                return remoteClientWithCircuitBreaker.getFailureClient().onErrorReturn("Ignored Exception.");
             }
         },
         CB_FAILURE_SERVER {
             @Override
             public Mono<String> getRemoteCall(RemoteClient remoteClient, RemoteClientWithCircuitBreaker remoteClientWithCircuitBreaker) {
-                return remoteClientWithCircuitBreaker.getFailureServer();
+                return remoteClientWithCircuitBreaker.getFailureServer().onErrorReturn("Recorded Exception.");
             }
         },
         CB_SLOW {

@@ -67,13 +67,25 @@ public class MemberRepositoryTest extends DataTestSupport {
 
     @Test
     public void test2() {
-        List<Member> members = memberRepository.allInnerJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
+        List<Member> members = memberRepository.partialInnerJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
         log.info("{}", members);
     }
 
     @Test
     public void test3() {
-        List<Member> members = memberRepository.partialInnerJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
+        List<Member> members = memberRepository.partialFetchJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
+        log.info("{}", members);
+    }
+
+    @Test
+    public void test4() {
+        List<Member> members = memberRepository.allInnerJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
+        log.info("{}", members);
+    }
+
+    @Test
+    public void test5() {
+        List<Member> members = memberRepository.allFetchJoinFindAllByUsernameIn(Arrays.asList("faker", "bang", "nuguri", "rookie"));
         log.info("{}", members);
     }
 }

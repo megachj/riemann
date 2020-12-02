@@ -12,6 +12,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m, t FROM Member m INNER JOIN m.team t WHERE m.username IN :usernameList")
     List<Member> partialInnerJoinFindAllByUsernameIn(List<String> usernameList);
 
+    @Query("SELECT m FROM Member m JOIN FETCH m.team WHERE m.username IN :usernameList")
+    List<Member> partialFetchJoinFindAllByUsernameIn(List<String> usernameList);
+
     @Query("SELECT m, t, l FROM Member m INNER JOIN m.team t INNER JOIN t.league l WHERE m.username IN :usernameList")
     List<Member> allInnerJoinFindAllByUsernameIn(List<String> usernameList);
+
+    @Query("SELECT m, t FROM Member m INNER JOIN m.team t JOIN FETCH t.league WHERE m.username IN :usernameList")
+    List<Member> allFetchJoinFindAllByUsernameIn(List<String> usernameList);
 }

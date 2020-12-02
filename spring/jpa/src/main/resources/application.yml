@@ -1,5 +1,5 @@
 server:
-  port: 10080
+  port: ${running.port:8080}
 
 spring:
   h2:
@@ -10,10 +10,9 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     database: h2
     show-sql: true
-    generate-ddl: true
+    generate-ddl: true # true 설정 시, @Entity 클래스 찾아서 ddl 생성하고 실행
     hibernate:
-      ddl-auto: update # create, create-drop, update, none
-      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      ddl-auto: create-drop # none(기본 값), create, create-drop, update
     properties:
       hibernate.format_sql: true
       hibernate.cache.use_second_level_cache: false
@@ -23,16 +22,12 @@ spring:
       hibernate.jdbc.batch_size: 1000
       hibernate.order_inserts: true
       hibernate.order_updates: true
+    open-in-view: false
 
-# database
-kpay-datasource:
-  master:
-    jdbcUrl: jdbc:h2:mem:kpay;MODE=MySQL;DB_CLOSE_DELAY=-1
-    username: sa
-    password:
-    poolName: base.master
-    maximumPoolSize: 10
-    minimumIdle: 5
-    maxLifetime: 1800000
-    connectionTimeout: 30000
-    idleTimeout: 30000
+sunset:
+  datasource:
+    base:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:local;MODE=MySQL;DB_CLOSE_DELAY=-1
+      username: sa
+      password:

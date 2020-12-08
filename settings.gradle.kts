@@ -1,13 +1,14 @@
 rootProject.name = "riemann"
 
-//include(":java")
+include(":java")
 include(":java:generics")
-//include(":java:etc")
+include(":java:etc")
 include(":java:etc:excel")
-//include(":spring")
+include(":spring")
 include(":spring:reactive")
 include(":spring:async")
-//include(":spring:circuitbreaker")
+include(":spring:circuitbreaker")
 include(":spring:circuitbreaker:resilience4j-springboot2-demo")
 include(":spring:jpa")
 include(":spring:cache")
+include(":spring:aop-reflection")

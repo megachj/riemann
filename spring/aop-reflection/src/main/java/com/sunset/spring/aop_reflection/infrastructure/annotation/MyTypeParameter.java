@@ -1,11 +1,11 @@
-package com.sunset.spring.aop_reflection.reflection;
+package com.sunset.spring.aop_reflection.infrastructure.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE_PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MyClassAnnotation {
+public @interface MyTypeParameter {
 }

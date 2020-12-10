@@ -1,16 +1,21 @@
 package com.sunset.spring.aop_reflection.service;
 
-import lombok.extern.slf4j.Slf4j;
+import com.sunset.spring.aop_reflection.infrastructure.annotation.MyMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
-@Slf4j
 @Service
 public class TargetServiceImpl implements TargetService {
 
+    @MyMethod
     @Override
-    public boolean hello(String greeting, List<String> names) {
-        return false;
+    public int hello(String greeting, List<String> names) {
+        Assert.notNull(names, "names must be not null.");
+        names.forEach(name -> {
+            System.out.println(greeting + ": " + name);
+        });
+        return names.size();
     }
 }

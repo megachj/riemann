@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface TargetService {
 
-    boolean hello(String s, List<String> sList);
+    int hello(String s, List<String> sList);
 }

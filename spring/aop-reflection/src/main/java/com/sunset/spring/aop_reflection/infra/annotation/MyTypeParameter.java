@@ -1,4 +1,4 @@
-package com.sunset.spring.aop_reflection.infrastructure.annotation;
+package com.sunset.spring.aop_reflection.infra.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

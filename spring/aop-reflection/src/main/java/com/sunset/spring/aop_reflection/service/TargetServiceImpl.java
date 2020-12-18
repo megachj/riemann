@@ -1,6 +1,6 @@
 package com.sunset.spring.aop_reflection.service;
 
-import com.sunset.spring.aop_reflection.infrastructure.annotation.MyMethod;
+import com.sunset.spring.aop_reflection.infra.annotation.MyMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 

@@ -26,11 +26,8 @@ public class RemoteProcedure {
         throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "This is a remote server exception. internal server error.");
     }
 
-    @GetMapping("/slow")
-    public String getSlow(@RequestParam long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (Exception ignored) {}
-        return String.format("SLOW %dms", millis);
+    @GetMapping("/chaos-monkey")
+    public String getChaosMonkey() {
+        return "OK";
     }
 }

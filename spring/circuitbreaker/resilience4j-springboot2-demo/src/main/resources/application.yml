@@ -1,6 +1,0 @@
-spring:
-  application.name: springboot2-resilience4j-demo
-  jackson.serialization.indent_output: true
-
-server:
-  port: 8080

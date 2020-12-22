@@ -7,8 +7,10 @@ dependencies {
 
     implementation("io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}")
     implementation("io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}")
-    // implementation("io.github.resilience4j:resilience4j-all:${resilience4jVersion}") // Optional, only required when you want to use the Decorators class
-    // implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("io.github.resilience4j:resilience4j-all:${resilience4jVersion}") // Decorators class 로 사용하는 경우 필요
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
+    implementation("de.codecentric:chaos-monkey-spring-boot:2.2.0") // 카오스 몽키: 카오스 엔지니어링 테스트용
 
     testImplementation("io.projectreactor:reactor-test")
 }

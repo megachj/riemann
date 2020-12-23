@@ -1,11 +1,11 @@
-package com.sunset.spring.jpa;
+package com.sunset.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//@SpringBootApplication
-public class JpaApplication {
+@SpringBootApplication
+public class ReactiveApplication {
     public static void main(String[] args) {
-        SpringApplication.run(JpaApplication.class, args);
+        SpringApplication.run(ReactiveApplication.class, args);
     }
 }

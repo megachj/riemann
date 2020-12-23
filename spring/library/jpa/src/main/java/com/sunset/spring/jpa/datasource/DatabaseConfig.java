@@ -53,9 +53,9 @@ public class DatabaseConfig {
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         emf.setJpaPropertyMap(jpaProperties.getProperties());
 
-        log.info("\n----------------------------------------------\n"
+        log.info("\n--------------------------------------------------------------------------------------------\n"
                 + "jpaPropertyMap: {}\n"
-                + "----------------------------------------------", emf.getJpaPropertyMap());
+                + "--------------------------------------------------------------------------------------------", emf.getJpaPropertyMap());
 
         return emf;
     }

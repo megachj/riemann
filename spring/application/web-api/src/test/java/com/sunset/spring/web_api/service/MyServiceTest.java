@@ -1,4 +1,4 @@
-package com.sunset.spring.testing.service;
+package com.sunset.spring.web_api.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,6 @@
 package com.sunset.spring.jpa.repository;
 
+import com.sunset.spring.jpa.datasource.DatabaseConfig;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {DatabaseConfig.class})
 public abstract class DataTestSupport {
 
     @Autowired
@@ -26,11 +27,11 @@ public abstract class DataTestSupport {
             em.flush();
             transaction.commit();
             em.clear();
-
         } catch (Exception e) {
             transaction.rollback();
+        } finally {
+            em.close(); // EntityManager 를 close 해야 커넥션 풀에 반환
         }
-
         return entity;
     }
 
@@ -46,11 +47,11 @@ public abstract class DataTestSupport {
             em.flush();
             transaction.commit();
             em.clear();
-
         } catch (Exception e) {
             transaction.rollback();
+        } finally {
+            em.close(); // EntityManager 를 close 해야 커넥션 풀에 반환
         }
-
         return entities;
     }
 }

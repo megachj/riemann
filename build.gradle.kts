@@ -23,7 +23,7 @@ allprojects {
 
 configure(subprojects.filter { it.path.contains("java") or it.path.contains("spring") }) {
     apply(plugin = "java")
-    apply(plugin = "java-library")
+    apply(plugin = "java-library") // dependency api 사용
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -56,4 +56,9 @@ configure(subprojects.filter { it.path.contains("spring") }) {
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
+}
+
+configure(subprojects.filter { it.path.contains("spring") and it.path.contains("library") }) {
+    tasks.bootJar { enabled = false }
+    tasks.jar { enabled = true }
 }

@@ -19,7 +19,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Slf4j
 @EntityScan(basePackages = "com.sunset.spring")
@@ -45,26 +44,20 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("baseDataSource") DataSource dataSource, JpaProperties jpaProperties) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("baseDataSource") DataSource dataSource,
+                                                                       JpaProperties jpaProperties // spring.jpa.properties 설정 값
+    ) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
         emf.setPackagesToScan("com.sunset.spring");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         emf.setJpaPropertyMap(jpaProperties.getProperties());
-//        emf.setJpaProperties(jpaProperties());
 
         log.info("\n----------------------------------------------\n"
                 + "jpaPropertyMap: {}\n"
                 + "----------------------------------------------", emf.getJpaPropertyMap());
 
         return emf;
-    }
-
-    private Properties jpaProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-        return properties;
     }
 
     @Bean

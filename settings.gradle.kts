@@ -16,5 +16,5 @@ include(":spring:application:piece:cache")
 include(":spring:application:piece:circuitbreaker")
 include(":spring:application:piece:circuitbreaker:resilience4j-springboot2")
 include(":spring:application:piece:reactive")
+include(":spring:application:piece:rest-docs")
 include(":spring:application:web-api")
-

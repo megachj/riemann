@@ -15,7 +15,7 @@ allprojects {
 
     ext {
         set("springAutoRestDocsVersion", "2.0.7")
-        set("springDocOpenApiUiVersion", "1.5.2")
+        set("springDocOpenApiUiVersion", "1.5.2") // Swagger
 
         set("hibernateValidatorVersion", "7.0.0.Final")
         set("resilience4jVersion", "1.6.1")

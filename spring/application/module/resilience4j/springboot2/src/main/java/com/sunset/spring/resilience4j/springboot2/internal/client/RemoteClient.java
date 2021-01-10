@@ -1,6 +1,6 @@
 package com.sunset.spring.resilience4j.springboot2.internal.client;
 
-import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.CircuitBreakerRegister;
+import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.MyCircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ public class RemoteClient {
 
     private final RemoteCallService remoteCallService;
 
-    @CircuitBreaker(name = CircuitBreakerRegister.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doSuccess")
+    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doSuccess")
     public String doSuccess() {
         return remoteCallService.doSuccess();
     }
@@ -24,7 +24,7 @@ public class RemoteClient {
         return eMessage;
     }
 
-    @CircuitBreaker(name = CircuitBreakerRegister.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doIgnoreException")
+    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doIgnoreException")
     public String doIgnoreException() {
         return remoteCallService.doIgnoreException();
     }
@@ -35,7 +35,7 @@ public class RemoteClient {
         return eMessage;
     }
 
-    @CircuitBreaker(name = CircuitBreakerRegister.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doException")
+    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doException")
     public String doException() {
         return remoteCallService.doException();
     }
@@ -46,7 +46,7 @@ public class RemoteClient {
         return eMessage;
     }
 
-    @CircuitBreaker(name = CircuitBreakerRegister.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doLatency")
+    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doLatency")
     public String doLatency() {
         return remoteCallService.doLatency();
     }

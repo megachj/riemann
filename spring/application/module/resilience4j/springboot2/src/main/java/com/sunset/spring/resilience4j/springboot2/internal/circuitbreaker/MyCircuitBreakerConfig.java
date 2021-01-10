@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Slf4j
 @Configuration
@@ -18,6 +19,7 @@ public class MyCircuitBreakerConfig {
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
     // 클라이언트 환경에 맞게 설정 변경
+    @Profile({"!test"})
     @Bean
     public CircuitBreakerConfig circuitBreakerConfig() {
         return CircuitBreakerConfig.from(circuitBreakerRegistry.getDefaultConfig())
@@ -44,7 +46,7 @@ public class MyCircuitBreakerConfig {
                     .onStateTransition(event -> {
                         log.info("circuitbreaker stateTransition: {}", event);
                     });
-            log.info("register circuitBreaker '{}'", circuitBreaker.getName());
+            log.info("register circuitBreaker '{}'. config: {}", circuitBreaker.getName(), circuitBreakerConfig);
         };
     }
 }

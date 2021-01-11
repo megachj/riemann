@@ -1,7 +1,6 @@
 package com.sunset.spring.resilence4j.springboot2.client;
 
 import com.sunset.spring.resilence4j.springboot2.Resilience4jTestApplication;
-import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.CircuitBreakerInitializer;
 import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.MyCircuitBreakerConfig;
 import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteCallService;
 import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClient;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -30,7 +28,6 @@ import java.time.Duration;
 import static org.mockito.Mockito.when;
 
 @Slf4j
-@ActiveProfiles({"test"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {Resilience4jTestApplication.class})
 @Import(RemoteClientCircuitBreakerTest.TestCircuitBreakerConfig.class)
@@ -38,8 +35,7 @@ public class RemoteClientCircuitBreakerTest {
 
     @TestConfiguration
     public static class TestCircuitBreakerConfig {
-        // 클라이언트 환경에 맞게 설정 변경
-        @Bean
+        @Bean(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME)
         public CircuitBreakerConfig testCircuitBreakerConfig(CircuitBreakerRegistry circuitBreakerRegistry) {
             CircuitBreakerConfig circuitBreakerConfig =
                     CircuitBreakerConfig.from(circuitBreakerRegistry.getDefaultConfig())

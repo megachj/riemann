@@ -5,9 +5,10 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Slf4j
 @Configuration
@@ -15,19 +16,20 @@ import org.springframework.context.annotation.Profile;
 public class MyCircuitBreakerConfig {
 
     public static final String REMOTE_CIRCUIT_BREAKER_NAME = "remoteClientCircuitBreaker";
+    public static final String REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME = "remoteClientCircuitBreaker";
 
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
     // 클라이언트 환경에 맞게 설정 변경
-    @Profile({"!test"})
-    @Bean
+    @ConditionalOnMissingBean(name = REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME)
+    @Bean(name = REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME)
     public CircuitBreakerConfig circuitBreakerConfig() {
         return CircuitBreakerConfig.from(circuitBreakerRegistry.getDefaultConfig())
                 .build();
     }
 
     @Bean(initMethod = "init")
-    public CircuitBreakerInitializer circuitBreakerInitializer(CircuitBreakerConfig circuitBreakerConfig) {
+    public CircuitBreakerInitializer circuitBreakerInitializer(@Qualifier(REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME) CircuitBreakerConfig circuitBreakerConfig) {
         return () -> {
             CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker(REMOTE_CIRCUIT_BREAKER_NAME, circuitBreakerConfig);
             circuitBreaker.getEventPublisher()

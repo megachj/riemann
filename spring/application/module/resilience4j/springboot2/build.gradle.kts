@@ -4,7 +4,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-aop") // annotation 기반 사용시 필요
 
     implementation("io.github.resilience4j:resilience4j-spring-boot2:${resilience4jVersion}")
     implementation("io.github.resilience4j:resilience4j-reactor:${resilience4jVersion}")

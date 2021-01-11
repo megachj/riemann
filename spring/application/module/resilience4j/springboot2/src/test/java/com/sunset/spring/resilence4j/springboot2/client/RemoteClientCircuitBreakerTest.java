@@ -74,7 +74,7 @@ public class RemoteClientCircuitBreakerTest {
     }
 
     @Test
-    public void openStatusFallbackTest() {
+    public void openStateFallbackTest() {
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker(MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME);
         CircuitBreaker.Metrics metrics = circuitBreaker.getMetrics();
 

@@ -76,16 +76,20 @@ public class RemoteClientCircuitBreakerTest {
     @Test
     public void openStatusFallbackTest() {
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker(MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME);
+        CircuitBreaker.Metrics metrics = circuitBreaker.getMetrics();
 
-        // when
-        remoteClient.doException();
-        remoteClient.doException();
-        remoteClient.doSuccess();
-        remoteClient.doSuccess();
-
-        // then
-        log.info("{}", circuitBreaker.getMetrics().toString());
-        Assertions.assertThat(circuitBreaker.getMetrics().getNumberOfFailedCalls()).isEqualTo(2);
+        // when & then
+        // 1. 상태 변화: CLOSED -> OPEN
+        for (int i = 0; i < circuitBreaker.getCircuitBreakerConfig().getMinimumNumberOfCalls(); ++i) {
+            remoteClient.doException();
+        }
+        Assertions.assertThat(metrics.getNumberOfFailedCalls()).isEqualTo(2);
         Assertions.assertThat(circuitBreaker.getState()).isEqualTo(CircuitBreaker.State.OPEN);
+
+        // 2. OPEN 상태일 때 요청 허용되지 않음
+        remoteClient.doSuccess();
+        remoteClient.doSuccess();
+        Assertions.assertThat(metrics.getNumberOfNotPermittedCalls()).isEqualTo(2); // 요청이 허용되지 않음.
+        Assertions.assertThat(metrics.getNumberOfSuccessfulCalls()).isEqualTo(0); // 성공 요청 없음.
     }
 }

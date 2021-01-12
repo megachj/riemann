@@ -35,7 +35,6 @@ public class CircuitBreakerRegistryConfig {
                 // waitDurationInOpenState 기간 이후에 ScheduledExecutorSerivce를 이용해 half-open으로 자동으로 전환해줄지 결정하는 값.
                 // 내부적으로 CircuitBreakerStateMachine 의 scheduledExecutorService 에 스케줄링할 스레드를 하나 등록하게 된다.
                 .automaticTransitionFromOpenToHalfOpenEnabled(true)
-                .ignoreExceptions(IgnoreException.class) // 무시할 예외 리스트
                 .build();
 
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(defaultCircuitBreakerConfig);

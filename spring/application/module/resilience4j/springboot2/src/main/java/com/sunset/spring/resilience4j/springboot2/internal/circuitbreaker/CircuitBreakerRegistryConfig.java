@@ -1,6 +1,5 @@
 package com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker;
 
-import com.sunset.spring.resilience4j.springboot2.internal.exception.IgnoreException;
 import io.github.resilience4j.bulkhead.BulkheadRegistry;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -30,7 +29,7 @@ public class CircuitBreakerRegistryConfig {
                 .failureRateThreshold(50) // 실패율 threshold, 추천 값: 50 이하
                 .slowCallRateThreshold(50) // 지연율 threshold
                 .slowCallDurationThreshold(Duration.ofSeconds(1)) // 지연시간 기준
-                .permittedNumberOfCallsInHalfOpenState(5) // HALF_OPEN 일 때 허용 콜 수
+                .permittedNumberOfCallsInHalfOpenState(10) // HALF_OPEN 일 때 허용 콜 수
                 .waitDurationInOpenState(Duration.ofSeconds(5)) // OPEN 에서 HALF_OPEN 으로 바뀌는 대기 시간, 추천 값: 수초 이내
                 // waitDurationInOpenState 기간 이후에 ScheduledExecutorSerivce를 이용해 half-open으로 자동으로 전환해줄지 결정하는 값.
                 // 내부적으로 CircuitBreakerStateMachine 의 scheduledExecutorService 에 스케줄링할 스레드를 하나 등록하게 된다.

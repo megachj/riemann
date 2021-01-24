@@ -1,6 +1,7 @@
 package com.sunset.spring.resilience4j.springboot2.internal.controller;
 
 import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClient;
+import com.sunset.spring.resilience4j.springboot2.remote.RemoteProcedure;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,16 +41,10 @@ public class MyController {
                 return remoteClient.doSuccess();
             }
         },
-        ignoreException {
-            @Override
-            public String remoteCall(RemoteClient remoteClient) {
-                return remoteClient.doIgnoreException();
-            }
-        },
         exception {
             @Override
             public String remoteCall(RemoteClient remoteClient) {
-                return remoteClient.doException();
+                return remoteClient.doException(500);
             }
         },
         latency {

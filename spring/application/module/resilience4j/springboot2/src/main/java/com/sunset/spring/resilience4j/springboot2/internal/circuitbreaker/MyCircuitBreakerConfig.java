@@ -1,5 +1,7 @@
 package com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker;
 
+import com.sunset.spring.resilience4j.springboot2.internal.exception.IgnoredException;
+import com.sunset.spring.resilience4j.springboot2.internal.exception.RecordedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Slf4j
 @Configuration
@@ -25,6 +29,8 @@ public class MyCircuitBreakerConfig {
     @Bean(name = REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME)
     public CircuitBreakerConfig circuitBreakerConfig() {
         return CircuitBreakerConfig.from(circuitBreakerRegistry.getDefaultConfig())
+                .ignoreExceptions(IgnoredException.class) // 무시 예외가 더 우선순위가 높음.
+                .recordExceptions(RecordedException.class)
                 .build();
     }
 

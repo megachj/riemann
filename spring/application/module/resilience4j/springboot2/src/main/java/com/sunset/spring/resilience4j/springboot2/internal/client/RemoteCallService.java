@@ -27,23 +27,10 @@ public class RemoteCallService {
                 .block();
     }
 
-    public String doIgnoreException() {
+    public String doException(int code) {
         return webClient
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("/remote/client-exception").build())
-                .retrieve()
-                .bodyToMono(String.class)
-                .map(r -> {
-                    log.info("Response: {}", r);
-                    return r;
-                })
-                .block();
-    }
-
-    public String doException() {
-        return webClient
-                .get()
-                .uri(uriBuilder -> uriBuilder.path("/remote/server-exception").build())
+                .uri(uriBuilder -> uriBuilder.path("/remote/exception/" + code).build())
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(r -> {

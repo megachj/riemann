@@ -1,4 +1,4 @@
-package com.sunset.spring.resilience4j.springboot2.internal.client;
+package com.sunset.spring.resilience4j.springboot2.internal.library;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -6,11 +6,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j
 @Service
-public class RemoteCallService {
+public class RemoteCallLibrary {
 
     private final WebClient webClient;
 
-    public RemoteCallService(WebClient.Builder webClientBuilder) {
+    public RemoteCallLibrary(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8080").build();
     }
 

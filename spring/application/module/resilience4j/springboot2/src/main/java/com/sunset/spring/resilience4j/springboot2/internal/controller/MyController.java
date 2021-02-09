@@ -1,7 +1,6 @@
 package com.sunset.spring.resilience4j.springboot2.internal.controller;
 
-import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClient;
-import com.sunset.spring.resilience4j.springboot2.remote.RemoteProcedure;
+import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClientSpec;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 @RequiredArgsConstructor
 public class MyController {
 
-    private final RemoteClient remoteClient;
+    private final RemoteClientSpec remoteClient;
     private final ExecutorService executorService;
     private final MeterRegistry meterRegistry;
 
@@ -37,23 +36,23 @@ public class MyController {
     public enum Type {
         success {
             @Override
-            public String remoteCall(RemoteClient remoteClient) {
+            public String remoteCall(RemoteClientSpec remoteClient) {
                 return remoteClient.doSuccess();
             }
         },
         exception {
             @Override
-            public String remoteCall(RemoteClient remoteClient) {
+            public String remoteCall(RemoteClientSpec remoteClient) {
                 return remoteClient.doException(500);
             }
         },
         latency {
             @Override
-            public String remoteCall(RemoteClient remoteClient) {
+            public String remoteCall(RemoteClientSpec remoteClient) {
                 return remoteClient.doLatency();
             }
         };
 
-        public abstract String remoteCall(RemoteClient remoteClient);
+        public abstract String remoteCall(RemoteClientSpec remoteClient);
     }
 }

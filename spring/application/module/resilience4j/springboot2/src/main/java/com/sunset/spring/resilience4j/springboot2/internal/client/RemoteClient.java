@@ -1,10 +1,8 @@
 package com.sunset.spring.resilience4j.springboot2.internal.client;
 
-import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.MyCircuitBreakerConfig;
 import com.sunset.spring.resilience4j.springboot2.internal.exception.IgnoredException;
 import com.sunset.spring.resilience4j.springboot2.internal.exception.RecordedException;
-import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import com.sunset.spring.resilience4j.springboot2.internal.library.RemoteCallLibrary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,26 +11,21 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
-public class RemoteClient {
+@Component
+public class RemoteClient implements RemoteClientSpec{
 
-    private final RemoteCallService remoteCallService;
+    private final RemoteCallLibrary remoteCallLibrary;
 
-    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doSuccess")
+    @Override
     public String doSuccess() {
-        return remoteCallService.doSuccess();
-    }
-    private String doSuccess(Throwable ex) {
-        String eMessage = "It's doSuccess fallback method.";
-        log.warn(eMessage);
-        return eMessage;
+        return remoteCallLibrary.doSuccess();
     }
 
-    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doException")
+    @Override
     public String doException(int code) {
         try {
-            return remoteCallService.doException(code);
+            return remoteCallLibrary.doException(code);
         } catch (HttpClientErrorException ex) {
             throw new IgnoredException("클라 에러는 무시", ex);
         } catch (HttpServerErrorException ex) {
@@ -42,19 +35,17 @@ public class RemoteClient {
                 throw new RecordedException("서버 에러는 기록", ex);
         }
     }
-    private String doException(int code, CallNotPermittedException ex) {
-        String eMessage = "It's doException fallback method.";
-        log.warn(eMessage);
-        return eMessage;
+
+    @Override
+    public String doLatency() {
+        return remoteCallLibrary.doLatency();
     }
 
-    @CircuitBreaker(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME, fallbackMethod = "doLatency")
-    public String doLatency() {
-        return remoteCallService.doLatency();
-    }
-    private String doLatency(CallNotPermittedException ex) {
-        String eMessage = "It's doLatency fallback method.";
-        log.warn(eMessage);
-        return eMessage;
+    @Override
+    public String twiceDoSuccess() {
+        doSuccess();
+        doSuccess();
+
+        return "twiceSuccess";
     }
 }

@@ -4,6 +4,7 @@ include(":java")
 include(":java:etc")
 include(":java:etc:excel")
 include(":java:generics")
+include(":java:basic")
 
 include(":spring")
 include(":spring:application")

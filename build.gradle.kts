@@ -22,7 +22,7 @@ allprojects {
     }
 }
 
-configure(subprojects.filter { it.path.contains("java") or it.path.contains("spring") }) {
+configure(subprojects.filter { it.path.contains("java") }) {
     apply(plugin = "java")
     apply(plugin = "java-library") // dependency api 사용
 
@@ -37,19 +37,33 @@ configure(subprojects.filter { it.path.contains("java") or it.path.contains("spr
         annotationProcessor("org.projectlombok:lombok:1.18.16")
         testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0") // 이상하게 안됨.
+        testImplementation("junit:junit:4.13.1")
+        testImplementation("org.assertj:assertj-core:3.19.0")
         testImplementation("org.hamcrest:hamcrest-core:2.2")
     }
 }
 
 configure(subprojects.filter { it.path.contains("spring") }) {
+    apply(plugin = "java")
+    apply(plugin = "java-library") // dependency api 사용
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
     tasks.bootJar { enabled = true }
     tasks.jar { enabled = false }
 
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     dependencies {
+        compileOnly("org.projectlombok:lombok:1.18.16")
+        testCompileOnly("org.projectlombok:lombok:1.18.16")
+        annotationProcessor("org.projectlombok:lombok:1.18.16")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
+
         implementation("org.springframework.boot:spring-boot-starter")
 
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

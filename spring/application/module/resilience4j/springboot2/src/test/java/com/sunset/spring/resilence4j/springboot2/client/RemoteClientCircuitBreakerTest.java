@@ -1,11 +1,10 @@
 package com.sunset.spring.resilence4j.springboot2.client;
 
 import com.sunset.spring.resilence4j.springboot2.Resilience4jTestApplication;
-import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.CircuitBreakerInitializer;
 import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.CircuitBreakerUtils;
 import com.sunset.spring.resilience4j.springboot2.internal.circuitbreaker.MyCircuitBreakerConfig;
-import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteCallService;
 import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClient;
+import com.sunset.spring.resilience4j.springboot2.internal.client.RemoteClientBreakable;
 import com.sunset.spring.resilience4j.springboot2.internal.exception.IgnoredException;
 import com.sunset.spring.resilience4j.springboot2.internal.exception.RecordedException;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
@@ -24,7 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.Duration;
@@ -37,9 +35,11 @@ import static org.mockito.Mockito.when;
 @Import(RemoteClientCircuitBreakerTest.TestCircuitBreakerConfig.class)
 public class RemoteClientCircuitBreakerTest {
 
+    private static final int SLOW_THRESHOLD_MILLIS = 50;
+
     @TestConfiguration
     public static class TestCircuitBreakerConfig {
-        @Bean(name = MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_CONFIG_BEAN_NAME)
+        @Bean(name = MyCircuitBreakerConfig.CONFIG_BEAN_NAME)
         public CircuitBreakerConfig testCircuitBreakerConfig(CircuitBreakerRegistry circuitBreakerRegistry) {
             CircuitBreakerConfig circuitBreakerConfig =
                     CircuitBreakerConfig.from(circuitBreakerRegistry.getDefaultConfig())
@@ -47,8 +47,8 @@ public class RemoteClientCircuitBreakerTest {
                             .slowCallDurationThreshold(Duration.ofMillis(50)) // 지연시간 기준
                             .waitDurationInOpenState(Duration.ofSeconds(60)) // OPEN 에서 HALF_OPEN 으로 바뀌는 대기 시간
                             .ignoreExceptions(IgnoredException.class) // ignoreExceptions 가 가장 우선순위가 높다.
-                            .recordExceptions(RecordedException.class)
                             .recordException(ex -> false) // 이 옵션이 있어야 recordExceptions 만 record(fail) 처리된다. 나머지는 모두 success 처리.
+                            .recordExceptions(RecordedException.class)
                             .build();
             return circuitBreakerConfig;
         }
@@ -56,33 +56,29 @@ public class RemoteClientCircuitBreakerTest {
 
     @Autowired
     private CircuitBreakerRegistry circuitBreakerRegistry;
-    @Autowired
-    private CircuitBreakerInitializer circuitBreakerInitializer;
 
     @Autowired
-    private RemoteClient remoteClient;
+    private RemoteClientBreakable remoteClientBreakable;
     @MockBean
-    private RemoteCallService remoteCallService;
+    private RemoteClient remoteClient;
 
     private CircuitBreaker circuitBreaker;
     private CircuitBreaker.Metrics metrics;
 
     @Before
     public void initStubbing() {
-        circuitBreakerRegistry.remove(MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME);
-        circuitBreakerInitializer.init();
-
-        circuitBreaker = circuitBreakerRegistry.circuitBreaker(MyCircuitBreakerConfig.REMOTE_CIRCUIT_BREAKER_NAME);
+        circuitBreaker = circuitBreakerRegistry.circuitBreaker(MyCircuitBreakerConfig.CIRCUIT_BREAKER_NAME);
+        circuitBreaker.reset(); // 여러 테스트 시에 서킷 브레이커 상태, 데이터 초기화
         metrics = circuitBreaker.getMetrics();
 
         // given
-        when(remoteCallService.doSuccess()).thenReturn("OK");
-        when(remoteCallService.doException(400)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
-        when(remoteCallService.doException(500)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
-        when(remoteCallService.doException(502)).thenThrow(new HttpServerErrorException(HttpStatus.BAD_GATEWAY));
-        when(remoteCallService.doLatency()).thenAnswer(invocation -> {
+        when(remoteClient.doSuccess()).thenReturn("OK");
+        when(remoteClient.doException(400)).thenThrow(new IgnoredException());
+        when(remoteClient.doException(500)).thenThrow(new RecordedException());
+        when(remoteClient.doException(502)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+        when(remoteClient.doLatency()).thenAnswer(invocation -> {
             try {
-                Thread.sleep(100);
+                Thread.sleep(SLOW_THRESHOLD_MILLIS + 50);
             } catch (Exception ignored) {}
             return "LATENCY OK";
         });
@@ -91,15 +87,15 @@ public class RemoteClientCircuitBreakerTest {
     @Test
     public void openStateFallback_exception_test() {
         // when: 실패율로 상태 변화
-        Assertions.catchThrowable(() -> remoteClient.doException(400)); // ignore, CLOSED
-        Assertions.catchThrowable(() -> remoteClient.doException(400)); // ignore, CLOSED
-        remoteClient.doSuccess(); // success, CLOSED
-        remoteClient.doSuccess(); // success, CLOSED
-        Assertions.catchThrowable(() -> remoteClient.doException(502)); // success, CLOSED
-        Assertions.catchThrowable(() -> remoteClient.doException(502)); // success, CLOSED
-        Assertions.catchThrowable(() -> remoteClient.doException(500)); // fail, CLOSED
-        Assertions.catchThrowable(() -> remoteClient.doException(500)); // fail, CLOSED -> OPEN
-        remoteClient.doSuccess(); // not permitted, OPEN
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(400)); // ignore, CLOSED
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(400)); // ignore, CLOSED
+        remoteClientBreakable.doSuccess(); // success, CLOSED
+        remoteClientBreakable.doSuccess(); // success, CLOSED
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(502)); // success, CLOSED
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(502)); // success, CLOSED
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(500)); // fail, CLOSED
+        Assertions.catchThrowable(() -> remoteClientBreakable.doException(500)); // fail, CLOSED -> OPEN
+        remoteClientBreakable.doSuccess(); // not permitted, OPEN
         CircuitBreakerUtils.printStatusInfo(circuitBreaker);
 
         // then
@@ -113,16 +109,26 @@ public class RemoteClientCircuitBreakerTest {
     @Test
     public void openStateFallback_latency_test() {
         // when: 지연율로 상태 변화
-        remoteClient.doSuccess(); // success, CLOSED
-        remoteClient.doSuccess(); // success, CLOSED
-        remoteClient.doLatency(); // slow success, CLOSED
-        remoteClient.doLatency(); // slow success, CLOSED -> OPEN
-        remoteClient.doSuccess(); // not permitted, OPEN
+        remoteClientBreakable.doSuccess(); // success, CLOSED
+        remoteClientBreakable.doSuccess(); // success, CLOSED
+        remoteClientBreakable.doLatency(); // slow success, CLOSED
+        remoteClientBreakable.doLatency(); // slow success, CLOSED -> OPEN
+        remoteClientBreakable.doSuccess(); // not permitted, OPEN
         CircuitBreakerUtils.printStatusInfo(circuitBreaker);
 
         // then
         Assertions.assertThat(metrics.getNumberOfSuccessfulCalls()).isEqualTo(4);
         Assertions.assertThat(metrics.getNumberOfSlowSuccessfulCalls()).isEqualTo(2);
         Assertions.assertThat(circuitBreaker.getState()).isEqualTo(CircuitBreaker.State.OPEN);
+    }
+
+    @Test
+    public void decoratorPatter_test() {
+        // when
+        remoteClientBreakable.twiceDoSuccess();
+        CircuitBreakerUtils.printStatusInfo(circuitBreaker);
+
+        // then
+        Assertions.assertThat(metrics.getNumberOfSuccessfulCalls()).isEqualTo(2);
     }
 }

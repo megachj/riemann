@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class ObjectTest {
+public class TypeTest {
 
     @Test
     public void 기본형참조타입_테스트() {

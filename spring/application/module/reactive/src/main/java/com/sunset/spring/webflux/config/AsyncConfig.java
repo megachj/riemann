@@ -1,4 +1,4 @@
-package com.sunset.spring.reactive;
+package com.sunset.spring.webflux.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

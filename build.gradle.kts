@@ -1,8 +1,8 @@
 plugins {
     java
     `java-library`
-    id("org.springframework.boot") version "2.3.5.RELEASE"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("org.springframework.boot") version "2.4.5"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
 allprojects {
@@ -32,15 +32,27 @@ configure(subprojects.filter { it.path.contains("java") }) {
     }
 
     dependencies {
-        compileOnly("org.projectlombok:lombok:1.18.16")
-        testCompileOnly("org.projectlombok:lombok:1.18.16")
-        annotationProcessor("org.projectlombok:lombok:1.18.16")
-        testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
+        compileOnly("org.projectlombok:lombok:1.18.20")
+        testCompileOnly("org.projectlombok:lombok:1.18.20")
+        annotationProcessor("org.projectlombok:lombok:1.18.20")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0") // 이상하게 안됨.
-        testImplementation("junit:junit:4.13.1")
-        testImplementation("org.assertj:assertj-core:3.19.0")
-        testImplementation("org.hamcrest:hamcrest-core:2.2")
+        testImplementation(platform("org.junit:junit-bom:5.7.1"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+
+//        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0") // 이상하게 안됨.
+//        testImplementation("junit:junit:4.13.1")
+//        testImplementation("org.assertj:assertj-core:3.19.0")
+//        testImplementation("org.hamcrest:hamcrest-core:2.2")
+    }
+
+    tasks {
+        "test"(Test::class) {
+            useJUnitPlatform()
+            testLogging {
+                events
+            }
+        }
     }
 }
 
@@ -59,10 +71,10 @@ configure(subprojects.filter { it.path.contains("spring") }) {
     }
 
     dependencies {
-        compileOnly("org.projectlombok:lombok:1.18.16")
-        testCompileOnly("org.projectlombok:lombok:1.18.16")
-        annotationProcessor("org.projectlombok:lombok:1.18.16")
-        testAnnotationProcessor("org.projectlombok:lombok:1.18.16")
+        compileOnly("org.projectlombok:lombok:1.18.20")
+        testCompileOnly("org.projectlombok:lombok:1.18.20")
+        annotationProcessor("org.projectlombok:lombok:1.18.20")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
 
         implementation("org.springframework.boot:spring-boot-starter")
 
@@ -71,9 +83,13 @@ configure(subprojects.filter { it.path.contains("spring") }) {
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
-}
 
-configure(subprojects.filter { it.path.contains("spring") and it.path.contains("library") }) {
-    tasks.bootJar { enabled = false }
-    tasks.jar { enabled = true }
+    tasks {
+        "test"(Test::class) {
+            useJUnitPlatform()
+            testLogging {
+                events
+            }
+        }
+    }
 }

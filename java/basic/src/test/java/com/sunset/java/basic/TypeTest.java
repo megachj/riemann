@@ -2,8 +2,8 @@ package com.sunset.java.basic;
 
 import lombok.Builder;
 import lombok.Data;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class TypeTest {
     public void 기본형참조타입_테스트() {
         // 기본형의 참조타입은 null 이 가능하다.
         Boolean isValid = null;
-        Assertions.assertThat(isValid).isNull();
+        Assertions.assertNull(isValid);
     }
 
     @Test
@@ -23,25 +23,23 @@ public class TypeTest {
                 .name("유저1")
                 .build();
 
-        Assertions.assertThat(user1.getHasJoined()).isEmpty();
-        Throwable thrown = Assertions.catchThrowable(() -> user1.getHasJoined().get());
-        Assertions.assertThat(thrown).isInstanceOf(NoSuchElementException.class); // Optional.empty() 일땐 NoSuchElementException 발생
+        Assertions.assertTrue(user1.getHasJoined().isEmpty());
+        Assertions.assertThrows(NoSuchElementException.class, () -> user1.getHasJoined().get());
 
         user1.setHasJoined(Optional.of(Boolean.FALSE));
-        Assertions.assertThat(user1.getHasJoined()).isPresent();
-        Assertions.assertThat(user1.getHasJoined().get()).isEqualTo(false);
+        Assertions.assertTrue(user1.getHasJoined().isPresent());
+        Assertions.assertEquals(false, user1.getHasJoined().get());
 
         user1.setHasJoined(Optional.of(Boolean.TRUE));
-        Assertions.assertThat(user1.getHasJoined()).isPresent();
-        Assertions.assertThat(user1.getHasJoined().get()).isEqualTo(true);
+        Assertions.assertTrue(user1.getHasJoined().isPresent());
+        Assertions.assertEquals(true, user1.getHasJoined().get());
 
         user1.setHasJoined(Optional.ofNullable(null));
-        Assertions.assertThat(user1.getHasJoined()).isEmpty();
+        Assertions.assertTrue(user1.getHasJoined().isEmpty());
 
         user1.setHasJoined(null);
-        Assertions.assertThat(user1.getHasJoined()).isNull(); // 옵셔널도 null 가능
-        Assertions.assertThatThrownBy(() -> user1.getHasJoined().get()) // null 일땐 당연히 NullPointerException 발생
-                .isInstanceOf(NullPointerException.class);
+        Assertions.assertNull(user1.getHasJoined()); // Optional 객체도 null 이 가능
+        Assertions.assertThrows(NullPointerException.class, () -> user1.getHasJoined().get());
     }
 
     @Data

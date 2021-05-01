@@ -39,11 +39,6 @@ configure(subprojects.filter { it.path.contains("java") }) {
 
         testImplementation(platform("org.junit:junit-bom:5.7.1"))
         testImplementation("org.junit.jupiter:junit-jupiter")
-
-//        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0") // 이상하게 안됨.
-//        testImplementation("junit:junit:4.13.1")
-//        testImplementation("org.assertj:assertj-core:3.19.0")
-//        testImplementation("org.hamcrest:hamcrest-core:2.2")
     }
 
     tasks {

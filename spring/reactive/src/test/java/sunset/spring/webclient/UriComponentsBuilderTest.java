@@ -1,4 +1,4 @@
-package sunset.spring.webflux;
+package sunset.spring.webclient;
 
 import java.util.Map;
 import org.assertj.core.api.Assertions;

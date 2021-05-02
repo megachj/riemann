@@ -1,4 +1,4 @@
-package sunset.spring.webflux.config;
+package sunset.spring.webclient.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

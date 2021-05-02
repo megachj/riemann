@@ -1,6 +1,6 @@
-package sunset.spring.webflux.external;
+package sunset.spring.webclient.external;
 
-import sunset.spring.webflux.model.User;
+import sunset.spring.webclient.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

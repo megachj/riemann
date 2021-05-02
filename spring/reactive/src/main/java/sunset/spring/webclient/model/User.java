@@ -1,4 +1,4 @@
-package sunset.spring.webflux.model;
+package sunset.spring.webclient.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

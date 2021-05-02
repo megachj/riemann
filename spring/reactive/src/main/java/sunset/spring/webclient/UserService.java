@@ -1,7 +1,7 @@
-package sunset.spring.webflux;
+package sunset.spring.webclient;
 
-import sunset.spring.webflux.external.ExternalUserApiController;
-import sunset.spring.webflux.model.User;
+import sunset.spring.webclient.external.ExternalUserApiController;
+import sunset.spring.webclient.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

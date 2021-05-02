@@ -1,4 +1,4 @@
-package sunset.spring.bean;
+package sunset.spring.core;
 
 public interface MyServiceSpec {
     void hello();

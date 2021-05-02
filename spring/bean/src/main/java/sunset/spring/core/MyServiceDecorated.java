@@ -1,4 +1,4 @@
-package sunset.spring.bean;
+package sunset.spring.core;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;

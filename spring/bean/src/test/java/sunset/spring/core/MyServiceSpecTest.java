@@ -1,4 +1,4 @@
-package sunset.spring.bean;
+package sunset.spring.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;

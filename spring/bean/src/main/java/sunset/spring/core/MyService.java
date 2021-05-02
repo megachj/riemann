@@ -1,4 +1,4 @@
-package sunset.spring.bean;
+package sunset.spring.core;
 
 import org.springframework.stereotype.Service;
 

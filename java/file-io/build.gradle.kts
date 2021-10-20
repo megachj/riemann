@@ -7,9 +7,17 @@ application {
 }
 
 tasks.jar {
+    // 실행할 main class 지정
     manifest {
         attributes["Main-Class"] = "com.sunset.Main"
     }
+    // 외부 libs 를 jar 파일 안에 추가
+    from(
+        configurations.compileClasspath.map { config ->
+            config.map { if (it.isDirectory) it else zipTree(it) }
+        }
+    )
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 sourceSets {

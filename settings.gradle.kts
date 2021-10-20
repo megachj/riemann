@@ -1,7 +1,7 @@
 rootProject.name = "riemann"
 
 include(":java")
-include(":java:basic")
+include(":java:file-io")
 include(":java:excel")
 include(":java:generics")
 

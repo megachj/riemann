@@ -24,6 +24,7 @@ allprojects {
 
 configure(subprojects.filter { it.path.contains("java") }) {
     apply(plugin = "java")
+    apply(plugin = "java-library")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11

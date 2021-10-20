@@ -1,14 +1,13 @@
 package sunset.java.generics;
 
-import sunset.java.generics.TypeErasure.MyOptional;
-import sunset.java.generics.TypeErasure.MyOptionalPerson;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 import sunset.java.generics.GenericType.Developer;
 import sunset.java.generics.GenericType.Person;
+import sunset.java.generics.TypeErasure.MyOptional;
+import sunset.java.generics.TypeErasure.MyOptionalPerson;
 
 public class GenericTypeTest {
 
@@ -31,8 +30,8 @@ public class GenericTypeTest {
         List list = developers;
         List<Developer> developers1 = list; // unchecked cast 경고 발생.
         list.forEach(o -> {
-            ((Developer)o).hello();
-            ((Person)o).hello();
+            ((Developer) o).hello();
+            ((Person) o).hello();
         });
     }
 
@@ -56,10 +55,10 @@ public class GenericTypeTest {
 
     @Test
     public void bounded() {
-        Integer[] integers = new Integer[] {1, 2, 3, 4, 5, 6, 7};
+        Integer[] integers = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         System.out.println(GenericType.countGreaterThan(integers, 3));
 
-        String[] strings = new String[] {"a", "b", "c", "d", "e"};
+        String[] strings = new String[]{"a", "b", "c", "d", "e"};
         System.out.println(GenericType.countGreaterThan(strings, "b"));
     }
 

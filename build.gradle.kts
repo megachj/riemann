@@ -24,7 +24,6 @@ allprojects {
 
 configure(subprojects.filter { it.path.contains("java") }) {
     apply(plugin = "java")
-    apply(plugin = "java-library") // dependency api 사용
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -42,6 +41,10 @@ configure(subprojects.filter { it.path.contains("java") }) {
     }
 
     tasks {
+        jar {
+            enabled = true
+        }
+
         "test"(Test::class) {
             useJUnitPlatform()
             testLogging {

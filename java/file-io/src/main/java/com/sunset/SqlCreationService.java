@@ -17,18 +17,23 @@ import lombok.NoArgsConstructor;
 
 public class SqlCreationService {
 
+    private static final String ACCOUNT_PREFIX =
+        " INSERT INTO account (account_id, name, created_at, updated_at) VALUES \n";
+
+    private static final String ACCOUNT_VALUE = " (%d, '%s', '%s', '%s');";
+
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     public Path createDummySqlFile() {
         // resources(여기선 data 디렉토리도 포함) 에 있는 데이터 불러오기
-        URL inputDataUrl = Main.class.getClassLoader().getResource("input/dummy-bank-account.json");
+        URL inputDataUrl = Main.class.getClassLoader().getResource("input/input.json");
         System.out.println("input data: " + inputDataUrl.getPath());
 
         // json 파일 읽기
-        List<BankAccount> bankAccounts = readJsonFile(inputDataUrl);
+        List<Account> accounts = readJsonFile(inputDataUrl);
 
         // sql 문 생성
-        List<String> sqlList = createSqlList(bankAccounts);
+        List<String> sqlList = createSqlList(accounts);
 
         // sql 파일 쓰기
         Path outputFile = writeFileOutput(findUserDir(), sqlList);
@@ -37,7 +42,7 @@ public class SqlCreationService {
         return outputFile;
     }
 
-    private List<BankAccount> readJsonFile(URL jsonFileUrl) {
+    private List<Account> readJsonFile(URL jsonFileUrl) {
         try {
             return objectMapper.readValue(jsonFileUrl, new TypeReference<>() {
             });
@@ -46,12 +51,14 @@ public class SqlCreationService {
         }
     }
 
-    private List<String> createSqlList(List<BankAccount> bankAccounts) {
-        return bankAccounts.stream()
-            .map(a ->
-                String.format("INSERT INTO dummy (bank_account_id, name) VALUES (%d, %s);", a.getBankAccountId(),
-                    a.getHolderName())
-            ).collect(Collectors.toList());
+    private List<String> createSqlList(List<Account> accounts) {
+        return accounts.stream()
+            .map(account ->
+                ACCOUNT_PREFIX + String.format(ACCOUNT_VALUE, account.getAccountId(), account.getName(),
+                    "null",
+                    "null")
+            )
+            .collect(Collectors.toList());
     }
 
     private String findUserDir() {
@@ -66,7 +73,7 @@ public class SqlCreationService {
     private Path writeFileOutput(String userDir, List<String> sqlList) {
         try {
             String directory = userDir + "/output/";
-            String fileName = "dummy.sql";
+            String fileName = "output.sql";
 
             Path directoryPath = Paths.get(directory);
             if (!Files.exists(directoryPath)) {
@@ -84,9 +91,9 @@ public class SqlCreationService {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @NoArgsConstructor
     @Data
-    public static class BankAccount {
+    public static class Account {
 
-        private long bankAccountId;
-        private String holderName;
+        private long accountId;
+        private String name;
     }
 }
